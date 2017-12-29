@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RewardProgram</title>
+    <%= csrf_meta_tags %>
+
+ <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    session Uid: <%= session[:user_id] %> 
+    session Pid: <%= session[:partner_id] %> 
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href= "#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Hotels <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'hotel list', areas_path %></li>
+              </ul>
+            </li>
+            <li><%= link_to 'promotions', promotions_path %></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+           <% if current_user != nil %>
+              <% if current_user.class == User %> 
+              <li><%= link_to 'my page', user_path(current_user) %></li>
+              <li><%= link_to 'Sign out', sign_out_path, method: :delete %></li>
+               <% elsif current_user.class == Partner %>  
+              <li><%= link_to 'my page', partner_path(current_user) %></li>
+              <li><%= link_to 'Sign out', sign_out_path, method: :delete %></li>
+              <% end %> 
+            <% elsif current_user == nil %> 
+             <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign in<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to 'Sign in', sign_in_path %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to 'Join as a user', new_user_path %></li> 
+                <li><%= link_to 'Join as a partner',  new_partner_path %></li> 
+              </ul>
+            <% end %>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+
+   
+
+
+    <%= yield %>
+  </body>
+</html>

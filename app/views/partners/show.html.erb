@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+ 
+ <h4 style="text-align: center;">Your listed Hotel</h4>
+    <% @areas.each do |area| %>
+     <div class="col-md-4 col-sm-6">
+       <div class="promotion box">
+        <strong><%= area.location %></strong><br>
+        <%= area.room_type %> room for 
+        <%= area.num_of_guest %> guests <br>
+        $<%= area.price_per_night %> per night <br>
+        <hr>
+        <%= image_tag area.avatar_url(:small).to_s %><br>
+        promotion created? 
+        <% promotion_yn = @areas.joins(:promotions).where(area_id: area) %>
+        <% if Promotion.where(area_id: area).any? %> Yes 
+        <% else %> No, create now! 
+        <% end %>
+       <br><%= link_to 'Show', area %>
+      </div>
+     </div>
+    <% end %> 
+  
+<div class="col-md-12 col-sm-12">
+  <strong>Name:</strong>
+  <%= @partner.name %>
+  <%= @partner.id %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @partner.email %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_partner_path(@partner) %> |
+<%= link_to 'Back', partners_path %>
+</div>

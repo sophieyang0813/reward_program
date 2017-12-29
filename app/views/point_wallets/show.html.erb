@@ -1,0 +1,34 @@
+
+<div style="text-align: center;">
+
+  <h1>My Point Wallet & Rewards </h1>
+
+  <h4>Redeemable Points | <%=@pointwallet.balance %> </h4>
+
+  <h4>My rewards | 
+    <% arr = [] %> 
+    <% @purchased_coupons.order(created_at: :desc).each do |t| %> 
+     <% if t.claimed_date == nil %> 
+     <% arr << t.claimed_date %> 
+     <% end %> 
+    <% end %> 
+    <%= arr.length %></h4> 
+
+   <% @purchased_coupons.order(created_at: :desc).each do |t| %>
+    <div class="col-md-4 col-sm-6">
+      <div class="box">
+      <p>
+       <% if t.claimed_date == nil %> 
+         <strong><%= t.promotion.name  %></strong><br>
+         <strong>valid date</strong><br>
+         <%= t.promotion.valid_from.to_date %><br> ~
+         <%= t.promotion.valid_to.to_date  %><br>
+         purchased with <%= t.promotion.point  %> points<br>
+          on <%= t.promotion.created_at.to_date %><br>
+      <%= link_to 'use it now', new_area_booking_path(t.promotion.area_id) %><br><p> 
+        </div>
+      </div>
+     <% end %> 
+    </div>
+  <% end %> 
+</div>

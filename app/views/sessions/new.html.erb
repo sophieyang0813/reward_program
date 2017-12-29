@@ -1,0 +1,21 @@
+<section id="banner" class="page7banner">
+<div class= "my_info col-md-8 col-sm-8">
+  <%= form_for :session, url: session_path do |form| %>
+   <div class="container">
+    <h3 style="color:black">Sign in </h3>
+    <div>
+      <% form.label :email %>
+      <%= form.text_field :email, type: 'email', placeholder: 'email' %>
+    </div>
+     <div>
+      <% form.label :password %>
+      <%= form.password_field :password, type: 'password', placeholder: 'password' %>
+    </div>
+    <div>
+      
+      <%= form.submit "log in", style: "color:black;"%> 
+    </div>
+   <% end %> 
+  </div>
+</div>
+</section>

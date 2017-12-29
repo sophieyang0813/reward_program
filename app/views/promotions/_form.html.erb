@@ -1,0 +1,61 @@
+<%= form_with(model: promotion, local: true) do |form| %>
+  <% if promotion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(promotion.errors.count, "error") %> prohibited this promotion from being saved:</h2>
+
+      <ul>
+      <% promotion.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :promotion_name %>
+  </div>
+
+  <div class="field">
+   <%= form.label :value %>
+   <%= form.number_field :value, id: :promotion_value %>
+  </div>
+
+  <div class="field">
+     <%= form.select(:reward_type) do %> 
+      <% [['Promotion type', nil ], ['deduction(-)','deduction'],['discount(%)','discount']].each do |a| %> 
+      <%= content_tag(:option, a.first, value: a.last) %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :point %>
+    <%= form.number_field :point, id: :promotion_point %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :promotion_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :terms_and_conditions %>
+    <%= form.text_area :terms_conditions, id: :promotion_terms_conditions %>
+  </div>
+
+  <div class="field">
+    <%= form.label :valid_from %>
+    <%= form.datetime_select :valid_from, id: :promotion_valid_from %>
+  </div>
+
+  <div class="field">
+    <%= form.label :valid_to %>
+    <%= form.datetime_select :valid_to, id: :promotion_valid_to %>
+  </div>
+  
+  <%= form.hidden_field :area_id, value: params[:area_id] %>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

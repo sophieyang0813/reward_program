@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  partner_id: MyString
+  type: 
+  num_of_guest: 1
+  price_per_night: 1
+  location: MyString
+  avatar: MyString
+
+two:
+  partner_id: MyString
+  type: 
+  num_of_guest: 1
+  price_per_night: 1
+  location: MyString
+  avatar: MyString

@@ -1,0 +1,15 @@
+<h1>New Booking</h1>
+
+<div class="col-md-6 col-sml-6">
+ <strong><%= @area[0].location %></strong><br> 
+  <%= @area[0].room_type %><br> 
+  <%= @area[0].num_of_guest %> guests <br>
+  $<%= @area[0].price_per_night %> per night <br>
+  <%= image_tag @area[0].avatar_url(:medium).to_s %> <br>
+</div>
+
+<div class="col-md-6 col-sml-6">
+ <%= render 'form', booking: @booking %>
+</div>
+
+<%= link_to 'Back', bookings_path %>

@@ -1,0 +1,18 @@
+
+
+<h1></h1>
+
+
+<div class="field box">
+  <p>
+  <%=@promotion.name %> <br>
+  USD$<%=@promotion.value %> <%=@promotion.reward_type %> <br>
+  <%=@promotion.point %> points 
+  valid from <%=@promotion.valid_from.to_date %> to <%=@promotion.valid_to.to_date %> 
+  </p>
+
+  <%= button_to 'Confirm Purchase', promotion_point_wallet_purchased_coupon_index_path(@promotion, @point_wallet),
+method: :post %> 
+</div>
+
+

@@ -1,0 +1,177 @@
+<p id="notice"><%= notice %></p>
+
+<hr>
+<!-- generate client token & embed in javascript -->
+<!-- Load the Client component. -->
+<script src="https://js.braintreegateway.com/web/3.6.3/js/client.min.js"></script>
+<!-- Load the Hosted Fields component. -->
+<script src="https://js.braintreegateway.com/web/3.6.3/js/hosted-fields.min.js"></script>
+
+
+ <div class="col-md-6 col-sml-6">
+  <strong><%= @area.location %></strong><br> 
+  <%= @area.room_type %> <br>
+  <%= @area.price_per_night %> per night<br> 
+  <%= @area.num_of_guest %> guests <br>
+  <%= image_tag @area.avatar_url(:medium).to_s %> 
+
+  <hr>
+  <strong>total day(s)</strong>
+  <%= (@booking.check_out - @booking.check_in)/86400 %> days
+
+  <hr>
+  <strong>Total price:</strong>
+  $<%= @area.price_per_night  %> * <%= (@booking.check_out - @booking.check_in)/86400 %> day(s) | 
+   $<%= @total_price %><br>
+   Earn <%= @total_price %> points with this booking <br>
+
+
+
+<% if @promotion != nil %>
+  <strong>Coupon applied price:</strong>
+  <%= @promotion.name %> |
+   <% if @promotion.reward_type == "discount" %> 
+    $<%= @total_price - (@total_price * @promotion.value)/100 %> <br>
+    Earn $<%= @total_price - (@total_price * @promotion.value)/100 %> points when booking at discounted price
+   <% elsif @promotion.reward_type == "deduction" %> 
+    $<%= @total_price -  @promotion.value %> <br>
+    Earn <%= @total_price -  @promotion.value %> points with this booking when booking at discounted price. 
+   <% end %> 
+     <% if @purchased_coupon.promotion_id == @promotion.id  %> 
+      <button onclick="myFunction()">apply coupon</button>
+      <p id="applied"></p>
+      <% else %> 
+      <p>Coupon available. <%= link_to 'purchase', promotions_path %></p>
+      <% end %>
+ <% end %>
+
+  
+</div>
+
+<div class = "col-md-6 col-sm-6">
+  <div class= "demo-frame">
+    <%= form_for :checkout_form, url: area_booking_checkout_path(@area, @booking), html: {id: "cardForm"} do |form| %> 
+
+    <%= form.label :card_number, "Credit Card Number", html: {class: "hosted-fields--label"}  %>
+    <div id="card-number" class="hosted-field"></div>
+
+    <%= form.label :expiration_date, "Expiration Date", html: {class: "hosted-fields--label"} %>
+    <div id ="expiration-date" class="hosted-field"></div>
+
+    <%= form.label :cvv, "CVV", html: {class: "hosted-fields--label"} %>
+    <div id="cvv" class="hosted-field"></div>
+
+    <%= form.hidden_field "payment_method_nonce" %>
+     <!-- <#%= hidden_field_tag(:purchased_coupon_id, @promotion.id ) %> -->
+     <div id="coupon"></div>
+     <div id="discount_price"></div>
+
+    <div class="button-container">
+      <%= form.submit "Purchase", disabled: true, class: "btn btn-primary", id: "submit-payment-btn" %> 
+    </div>
+    <% end %> 
+  </div>
+</div>
+
+
+<% if @purchased_coupon != nil %> 
+  <script type="text/javascript">
+    function myFunction() {
+      document.getElementById("coupon").innerHTML = "<%= j hidden_field_tag(:purchased_coupon_id, @purchased_coupon.id) %>";
+      document.getElementById("discount_price").innerHTML = "<%= j hidden_field_tag(:discount_price, 
+        if @promotion.reward_type == "discount"
+          @total_price - (@total_price * @promotion.value)/100
+       elsif @promotion.reward_type == "deduction" 
+         @total_price -  @promotion.value 
+       end
+       ) %>";
+      document.getElementById("applied").innerHTML = "Coupon has been successfully applied.";
+  }
+  </script>
+<% end %> 
+
+<div class="col-md-12 col-sm-12">
+<%= link_to 'Edit', edit_booking_path(@booking) %> |
+<%= link_to 'cancel', bookings_path %>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+ var form = document.querySelector('#cardForm');
+ var submit = document.querySelector('#submit-payment-btn');
+ var authorization = '<%= @client_token%>';
+
+      braintree.client.create({
+        authorization: authorization 
+      }, function (clientErr, clientInstance) {
+        if (clientErr) {
+          // console.error(clientErr); Q1 
+          return;
+        }
+
+        // This example shows Hosted Fields, but you can also use this
+        // client instance to create additional components here, such as
+        // PayPal or Data Collector.
+
+        braintree.hostedFields.create({
+          client: clientInstance,
+          styles: {
+            'input': {
+              'font-size': '14px'
+            },
+            'input.invalid': {
+              'color': 'red'
+            },
+            'input.valid': {
+              'color': 'green'
+            }
+          },
+          fields: {
+            number: {
+              selector: '#card-number',
+              placeholder: '4111 1111 1111 1111'
+            },
+            cvv: {
+              selector: '#cvv',
+              placeholder: '123'
+            },
+            expirationDate: {
+              selector: '#expiration-date',
+              placeholder: '10/2019'
+            }
+          }
+        }, function (hostedFieldsErr, hostedFieldsInstance) {
+          if (hostedFieldsErr) {
+            // console.error(hostedFieldsErr);  Q2  displays the error message
+            return;
+          }
+
+          submit.removeAttribute('disabled');
+
+          form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+
+
+            // step 3(braintree picture)
+            hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+              if (tokenizeErr) {
+                console.error(tokenizeErr);
+                return;
+              }
+
+              // If this was a real integration, this is where you would
+              // send the nonce to your server.
+              document.querySelector('input[name="checkout_form[payment_method_nonce]"]').value = payload.nonce;
+              
+              form.submit();
+            });
+          }, false);
+        });
+      });
+
+
+</script>

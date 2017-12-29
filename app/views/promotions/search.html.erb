@@ -1,0 +1,15 @@
+<h1>search</h1>
+
+<% for i in 0..@promotions.length - 1 %> 
+  <div class="col-md-4 col-sm-6">
+    <div class="promotion box">
+      <strong><%= @promotions[i].name %></strong>
+      <%= @promotions[i].promo %><br>
+      <%= @promotions[i].reward_type %><br>
+      <%= @promotions[i].point %><br>
+      <%= @promotions[i].valid_from.to_date %> ~
+      <%= @promotions[i].valid_to.to_date %><br>
+      <%= link_to 'purchase coupon', new_promotion_point_wallet_purchased_coupon_path(@promotions[i], @point_wallet) %>
+    </div>
+   </div>
+ <% end %> 

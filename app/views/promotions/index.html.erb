@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Promotions</h1>
+
+<% if current_user.class == Partner %>
+  <div class="col-md-12 col-sm-12">
+    <%= form_tag(promotions_search_path, method: :get) do %> 
+    <%= text_field_tag :promo, nil, placeholder:'find discounts!'  %>
+    <%= submit_tag 'Search' ,name: nil , class: "btn btn-default search" %>
+    <% end %>  
+  </div>
+<% end %>  
+
+<% if current_user.class == User %> 
+  <div class="wallet box">
+   <h4><strong><%= link_to "my point wallet & rewards",  user_point_wallet_path( @current_user_id,@point_wallet.id) %></strong></h4>
+    <%= @point_wallet.balance %> available points <br>
+      <%= form_tag(promotions_search_path, method: :get) do %> 
+      <%= text_field_tag :promo, nil, placeholder:'find discounts!'  %>
+      <!--   <%#= hidden_field_tag(:point_wallet_id, @point_wallet.id ) %> -->
+      <%= submit_tag 'Search' ,name: nil , class: "btn btn-default search" %>
+      <% end %>  
+  </div>
+<% end %>
+
+  <% @promotions.each do |promotion| %>
+   <div class="col-md-4 col-sm-6">
+    <div class="promotion box">
+     <h4><strong><%= promotion.name %></strong></h4>
+     <h4><%= promotion.promo %></h4>
+     <strong>reward type</strong><br>
+     <%= promotion.reward_type %>
+     <%= promotion.point %> points <br>
+     <strong>description</strong>
+     <%= promotion.description %><br>
+    <strong>terms and conditions</strong>
+    <%= promotion.terms_conditions %><br>
+     <strong>Valid date</strong>
+     <%= promotion.valid_from.to_date %> ~ <%= promotion.valid_to.to_date %><br>
+     <%= image_tag @areas.where(id: promotion.area_id)[0].avatar_url(:small).to_s %><br>
+     <%= link_to 'purchase coupon', new_promotion_point_wallet_purchased_coupon_path(promotion, @point_wallet) if session[:user_id] != nil %>
+      <% if session[:partner_id] !=nil   %> 
+     <%= link_to 'Show', promotion %>
+      <% end %> 
+    </div>
+   </div>
+  <% end %>
+
+<br>
+
+

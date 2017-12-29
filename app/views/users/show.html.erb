@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+
+ <h3><%= link_to "my reward",  user_point_wallet_path(@user,@point_wallet) %></h3>
+<p>
+  <strong><%= @user.point_wallet.balance %></strong> points
+</p>
+<p>
+  <strong>First name:</strong>
+  <%= @user.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @user.last_name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Avatar:</strong>
+  <%= image_tag @user.avatar_url(:medium).to_s %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

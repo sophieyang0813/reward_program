@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  promotion_id: 1
+  point_wallet_id: 1
+  claimed_date: 2017-12-19 09:35:56
+
+two:
+  promotion_id: 1
+  point_wallet_id: 1
+  claimed_date: 2017-12-19 09:35:56

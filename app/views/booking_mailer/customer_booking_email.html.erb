@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>
+      Thank you for using Missterio, <%= @customer.first_name %>!
+     You booked at <%= @partner.name %> from <%=@booking.check_in %> to <%=@booking.check_out %>.
+
+      The total price was $<%=@booking.total_price %>
+      <% if @booking.discounted_price != nil %>
+      Coupon was applied and you paid $<%=@booking.discounted_price %>
+      <% end %>  
+
+
+    </p>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+  <h2 style="text-align: center"><%= link_to 'list your hotel', new_area_path if @current_user.class == Partner %></h2>
+
+  <% @areas.each do |area| %>
+  <div class="col-md-4 col-sm-6">
+    <div class="hotel box">
+      <strong><%= area.location %></strong><br>
+      <%= area.room_type %> room <br>
+      <%= area.num_of_guest %> guests |
+      $<%= area.price_per_night %> per night <br>
+      <%= image_tag area.avatar_url(:small).to_s %><br>
+      <% if @current_user != nil %> 
+        <%= link_to 'book this place', new_area_booking_path(area.id) if @current_user.class == User  %> | 
+        <%= link_to 'details', area  %>
+      <% end %>
+      </tr>
+    </div>
+  </div>
+  <% end %>
+
+
+<br>
+
+

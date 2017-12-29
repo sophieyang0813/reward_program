@@ -1,0 +1,22 @@
+  
+  <% if  PurchasedCoupon.where(point_wallet_id: @booking.point_wallet_id).any? %> 
+  <strong><%= Promotion.where(area_id: @booking.area_id)[0].name %></strong> coupon <br>
+    purchased on <%= PurchasedCoupon.where(point_wallet_id: @booking.point_wallet_id)[0].created_at.to_date %> <br>
+  <% else %> 
+    no promotion coupon has been purchased for this property. <br>
+  <% end %> 
+</div>
+
+
+<%= form_with(model: @booking, local: true) do |form| %>
+
+  <div class="field">
+    hello hidden field
+    <%= form.hidden_field :purchased_coupon_id, value: 35 %>
+      </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+

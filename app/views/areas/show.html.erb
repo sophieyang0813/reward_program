@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+
+<!-- <#%= link_to 'book this place', new_area_point_wallet_booking_path(@area, @pointwallet) if session[:user_id] != nil? %> -->
+
+ <!-- session[:user_id] != nil? -->
+
+<!-- <#%= link_to 'redeem coupon', new_promotion_point_wallet_purchased_coupon_path(@promotion, @point_wallet) if @current_user.class == User %> -->
+
+
+<div class="col-md-6 col-sm-6" style="text-align: center;">
+
+    <h3><strong><%= @area.location %></strong><br></h3>
+      <%= image_tag @area.avatar_url(:medium).to_s %> 
+    <hr>
+   <p>
+    <%= @area.room_type %> room <br>
+    <%= @area.num_of_guest %> guests <br>
+    $<%= @area.price_per_night %> per night <br> 
+    Promotion available? 
+    <% if @promotion != nil %>
+     <%= @promotion.name %><br>
+     <%= @promotion.point %> points<br>
+    <% else %>
+      No promotion available. <%= link_to 'create now!', new_area_promotion_path(@area) if @current_user.id == @area.partner_id %>
+    <% end %> 
+    </p>
+    <%= link_to 'book this place', new_area_booking_path(@area) if @current_user.class == User  %>
+  </div>
+</div>
+
+
+<div class="col-md-12 col-sm-12" style="text-align: center;">
+<%= link_to 'create promotion', new_area_promotion_path(@area) if current_user.id == @area.partner_id %>
+
+</div>
+
+<div class="col-md-12 col-sm-12" style="text-align: center;">
+
+<%= link_to 'Hotel List', areas_path %>
+
+</div>
